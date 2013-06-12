@@ -1,0 +1,14 @@
+# build products...
+*.py[co]
+build
+
+# Emacs backup files...
+*~
+.\#*
+
+# Mac OS X stuff...
+.DS_Store
+
+# Vim swap files
+*.swp
+*.swo
