@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import socket
 import sys
 import time
 from pprint import pprint
@@ -17,7 +18,11 @@ if len(sys.argv) != 3:
 master = sys.argv[1]
 port = int(sys.argv[2])
 
-mymfs = moosefs.MooseFS(masterhost=master, masterport=port)
+try:
+    mymfs = moosefs.MooseFS(masterhost=master, masterport=port)
+except socket.error, e:
+    print '\nError de conexion: %s\n' % str(e)
+    sys.exit(1)
 
 
 def version():
@@ -62,20 +67,23 @@ def info():
 #    print
 #    print myinfo['chunk_info']
 
-    print '\nInformacion del sistema:'
-
     masterinfo = myinfo['info']
     matrixinfo = myinfo['matrix']
     chunk_info = myinfo['chunk_info']
     check_info = myinfo['check_info']
 
-    print 'Archivos:         %8d' % (masterinfo['files'])
-    print 'Chunks:           %8d' % (masterinfo['chunks'])
-    print 'Chunks undergoal: %8d' % (chunk_info['replications_under_goal_out_of'])
-#    print 'Chunks undergoal: %8d' % (check_info['under_goal_chunks']) ## Info desactualizada?
-    print 'Espacio total:    %5d GB' % (masterinfo['total_space']/1024/1024/1024)
-    print 'Disponible:       %5d GB' % (masterinfo['avail_space']/1024/1024/1024)
-    print 'Memoria usada:    %5d MB' % (masterinfo['memusage']/1024/1024)
+    print '\nInformacion del sistema:'
+    print 'Archivos:              %9d' % (masterinfo['files'])
+    print 'Chunks:                %9d' % (masterinfo['chunks'])
+    print 'Chunks undergoal:      %9d' % (chunk_info['replications_under_goal_out_of'])
+#    print 'Chunks undergoal:      %8d' % (check_info['under_goal_chunks']) ## Info desactualizada?
+    print 'Listos p/borrar:       %9d' % (matrixinfo[0][0])
+    print 'Pendientes de borrado: %9d' % (sum(matrixinfo[0][1:3]))
+    print
+    print 'Espacio total:    %6d GB' % (masterinfo['total_space']/1024/1024/1024)
+    print 'Disponible:       %6d GB' % (masterinfo['avail_space']/1024/1024/1024)
+    print 'Memoria usada:    %6d MB' % (masterinfo['memusage']/1024/1024)
+
 #    print ': %8d' % (matrixinfo[''])
 #    print ': %8d' % (chunk_info[''])
 
@@ -106,13 +114,13 @@ def servers():
 
 
 version()
-#info()
+info()
 #disks()
 #exports()
 
 #mountl()
 #mounts()
 #ops()
-servers()
+#servers()
 
 print
