@@ -5,6 +5,7 @@ import socket
 import sys
 import time
 from pprint import pprint
+from optparse import OptionParser
 
 try:
     import moosefs
@@ -12,12 +13,23 @@ except ImportError:
     print '\nError al importar moosefs.py, verificar instalacion\n'
     sys.exit(1)
 
-if len(sys.argv) != 3:
-    print '   Uso: %s mfsmaster puerto (9421 | 9413 | 9423)\n' % sys.argv[0]
+parser = OptionParser(usage='%prog [ options ] mfsmaster port ( 9421 | 9413 | 9423 )')
+parser.add_option("-i", "--info",    dest='info',    default=False, action='store_true', help="show info about MFS cluster (default if no option given)")
+parser.add_option("-d", "--disks",   dest='disks',   default=False, action='store_true', help="show info about disks")
+parser.add_option("-e", "--exports", dest='exports', default=False, action='store_true', help="show info about exports")
+parser.add_option("-m", "--mountl",  dest='mountl',  default=False, action='store_true', help="show info about mountl")
+parser.add_option("-M", "--mounts",  dest='mounts',  default=False, action='store_true', help="show info about mounts")
+parser.add_option("-o", "--ops",     dest='ops',     default=False, action='store_true', help="show info about operations")
+parser.add_option("-s", "--servers", dest='servers', default=False, action='store_true', help="show info about servers")
+
+(options, args) = parser.parse_args()
+
+if len(args) != 2:
+    parser.print_help()
     sys.exit(1)
 
-master = sys.argv[1]
-port = int(sys.argv[2])
+master = args[0]
+port = int(args[1])
 
 try:
     mymfs = moosefs.MooseFS(masterhost=master, masterport=port)
@@ -74,15 +86,15 @@ def info():
     check_info = myinfo['check_info']
 
     print '\nInformacion del sistema:'
-    print 'Archivos:              %9d' % (masterinfo['files'])
-    print 'Chunks:                %9d' % (masterinfo['chunks'])
-    print 'Chunks undergoal:      %9d' % (chunk_info['replications_under_goal_out_of'])
-#    print 'Chunks undergoal:      %8d' % (check_info['under_goal_chunks']) ## Info desactualizada?
-    print 'Listos p/borrar:       %9d' % (matrixinfo[0][0])
-    print 'Pendientes de borrado: %9d' % (sum(matrixinfo[0][1:3]))
+    print 'Archivos:              %10d' % (masterinfo['files'])
+    print 'Chunks:                %10d' % (masterinfo['chunks'])
+    print 'Chunks undergoal:      %10d' % (chunk_info['replications_under_goal_out_of'])
+#    print 'Chunks undergoal:      %10d' % (check_info['under_goal_chunks']) ## Info desactualizada?
+    print 'Listos p/borrar:       %10d' % (matrixinfo[0][0])
+    print 'Pendientes de borrado: %10d' % (sum(matrixinfo[0][1:3]))
     for i in range(len(matrixinfo[0])):
         if matrixinfo[0][i]:
-            print 'Pendientes con %d copias: %7d' % (i, matrixinfo[0][i])
+            print 'Pendientes con %d copias: %8d' % (i, matrixinfo[0][i])
     print
     print 'Espacio total:    %6d GB' % (masterinfo['total_space']/1024/1024/1024)
     print 'Disponible:       %6d GB' % (masterinfo['avail_space']/1024/1024/1024)
@@ -116,15 +128,23 @@ def servers():
     for cs in myservers['servers']:
         print cs
 
-
 version()
-info()
-#disks()
-#exports()
 
-#mountl()
-#mounts()
-#ops()
-#servers()
+if not (options.info or options.disks or options.exports or options.mountl or options.mounts or options.ops or options.servers):
+    info()
+if options.info:
+    info()
+if options.disks:
+    disks()
+if options.exports:
+    exports()
+if options.mountl:
+    mountl()
+if options.mounts:
+    mounts()
+if options.ops:
+    ops()
+if options.servers:
+    servers()
 
 print
