@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import optparse
 import socket
 import sys
 import time
@@ -79,6 +80,9 @@ def info():
 #    print 'Chunks undergoal:      %8d' % (check_info['under_goal_chunks']) ## Info desactualizada?
     print 'Listos p/borrar:       %9d' % (matrixinfo[0][0])
     print 'Pendientes de borrado: %9d' % (sum(matrixinfo[0][1:3]))
+    for i in range(len(matrixinfo[0])):
+        if matrixinfo[0][i]:
+            print 'Pendientes con %d copias: %7d' % (i, matrixinfo[0][i])
     print
     print 'Espacio total:    %6d GB' % (masterinfo['total_space']/1024/1024/1024)
     print 'Disponible:       %6d GB' % (masterinfo['avail_space']/1024/1024/1024)
