@@ -88,7 +88,7 @@ def info():
     print '\nInformacion del sistema:'
     print 'Archivos:              %10d' % (masterinfo['files'])
     print 'Chunks:                %10d' % (masterinfo['chunks'])
-    print 'Chunks sin copias:     %10d' % (sum([myinfo['matrix'][x][0] for x in range(1,5)]))
+    print 'Chunks sin copias:     %10d' % (sum([matrixinfo[x][0] for x in range(1,5)]))
     print 'Chunks undergoal:      %10d' % (chunk_info['replications_under_goal_out_of'])
 #    print 'Chunks undergoal:      %10d' % (check_info['under_goal_chunks']) ## Info desactualizada?
     print 'Listos p/borrar:       %10d' % (matrixinfo[0][0])
