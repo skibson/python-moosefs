@@ -112,7 +112,8 @@ def mountl():
 
 def mounts():
     mymounts = mymfs.mfs_mounts()
-    print mymounts[0]
+    for mount in mymounts:
+        print '%-12s - %-15s - %-8s - %-20s - %s' % (mount['host'].split('.')[0], mount['ip'], mount['version'], mount['mount'], mount['moose_path'])
 
 
 def ops():
