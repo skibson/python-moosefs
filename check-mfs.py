@@ -79,6 +79,9 @@ def info():
 #    print myinfo['matrix']
 #    print
 #    print myinfo['chunk_info']
+#    print
+#    print myinfo['check_info']
+#    print
 
     masterinfo = myinfo['info']
     matrixinfo = myinfo['matrix']
@@ -89,8 +92,9 @@ def info():
     print 'Archivos:              %10d' % (masterinfo['files'])
     print 'Chunks:                %10d' % (masterinfo['chunks'])
     print 'Chunks sin copias:     %10d' % (sum([matrixinfo[x][0] for x in range(1,5)]))
-    print 'Chunks undergoal:      %10d' % (chunk_info['replications_under_goal_out_of'])
+    print 'Chunks undergoal:      %10d' % (sum([matrixinfo[x][1] for x in range(1,5)]))
 #    print 'Chunks undergoal:      %10d' % (check_info['under_goal_chunks']) ## Info desactualizada?
+    print 'Chunks overgoal:       %10d' % (sum([matrixinfo[x][3] for x in range(1,5)]))
     print 'Listos p/borrar:       %10d' % (matrixinfo[0][0])
     print 'Pendientes de borrado: %10d' % (sum(matrixinfo[0][1:3]))
     for i in range(len(matrixinfo[0])):
