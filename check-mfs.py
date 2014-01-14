@@ -130,12 +130,27 @@ def ops():
 
 def servers():
     myservers = mymfs.mfs_servers()
+    a = []
+
     print '\nMetadata servers:'
     for ml in myservers['metadata_backup_loggers']:
-        print ml
-    print '\nChunk servers:'
+        print ' - %-23s | IP: %12s | version: %12s |' % (ml)
+
     for cs in myservers['servers']:
-        print cs
+        try:
+            pu = float(cs['percent_used'])
+        except ValueError:
+            pu = 0
+        if cs['version'] == '256.0.0':
+            version = 'disconnected'
+        else:
+            version = cs['version']
+        a.append((cs['host'], cs['ip'], version, pu))
+    a.sort()
+
+    print '\nChunk servers:'
+    for cs in a:
+        print ' - %-23s | IP: %12s | version: %12s | %5.2f percent used' % (cs)
 
 version()
 
