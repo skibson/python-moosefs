@@ -36,6 +36,9 @@ try:
 except socket.error, e:
     print '\nError de conexion: %s\n' % str(e)
     sys.exit(1)
+except RuntimeError, e:
+    print '\nError de conexion: %s\n' % str(e)
+    sys.exit(1)
 
 
 def version():
