@@ -120,7 +120,7 @@ def mountl():
 def mounts():
     mymounts = mymfs.mfs_mounts()
     for mount in mymounts:
-        print '%-12s - %-15s - %-8s - %-20s - %s' % (mount['host'].split('.')[0], mount['ip'], mount['version'], mount['mount'], mount['moose_path'])
+        print '%-12s - %-15s - %-8s - %-45s - %s' % (mount['host'].split('.')[0], mount['ip'], mount['version'], mount['mount'], mount['moose_path'])
 
 
 def ops():
@@ -134,7 +134,7 @@ def servers():
 
     print '\nMetadata servers:'
     for ml in myservers['metadata_backup_loggers']:
-        print ' - %-23s | IP: %12s | version: %12s |' % (ml)
+        print ' - %-25s | IP: %12s | version: %8s |' % (ml)
 
     for cs in myservers['servers']:
         try:
@@ -150,7 +150,7 @@ def servers():
 
     print '\nChunk servers:'
     for cs in a:
-        print ' - %-23s | IP: %12s | version: %12s | %5.2f percent used' % (cs)
+        print ' - %-25s | IP: %12s | version: %8s | %5.2f percent used' % (cs)
 
 version()
 
