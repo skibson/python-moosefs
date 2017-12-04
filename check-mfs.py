@@ -34,10 +34,10 @@ port = int(args[1])
 try:
     mymfs = moosefs.MooseFS(masterhost=master, masterport=port)
 except socket.error, e:
-    print '\nError de conexion: %s\n' % str(e)
+    print '\nConnection error: %s\n' % str(e)
     sys.exit(1)
 except RuntimeError, e:
-    print '\nError de conexion: %s\n' % str(e)
+    print '\nConnection error: %s\n' % str(e)
     sys.exit(1)
 
 
@@ -60,7 +60,7 @@ def disks():
             erro = time.asctime(erro)
 #        csd[host] = (ruta, perc, erro, stat)
         csd[host] = (perc, erro, stat)
-    print '\nEstado de los discos:'
+    print '\nDisks status:'
     for key in sorted(csd.iterkeys()):
         print '%-10s %-25s %2d%% usado - %-25s - %s' % (key.split(':')[0], key.split(':')[1], csd[key][0], csd[key][1], csd[key][2])
 
@@ -91,22 +91,22 @@ def info():
     chunk_info = myinfo['chunk_info']
     check_info = myinfo['check_info']
 
-    print '\nInformacion del sistema:'
-    print 'Archivos:              %10d' % (masterinfo['files'])
+    print '\nSystem information:'
+    print 'Files:              %10d' % (masterinfo['files'])
     print 'Chunks:                %10d' % (masterinfo['chunks'])
-    print 'Chunks sin copias:     %10d' % (sum([matrixinfo[x][0] for x in range(1,5)]))
+    print 'Chunks without copies:     %10d' % (sum([matrixinfo[x][0] for x in range(1,5)]))
     print 'Chunks undergoal:      %10d' % (sum([matrixinfo[x][1] for x in range(1,5)]))
 #    print 'Chunks undergoal:      %10d' % (check_info['under_goal_chunks']) ## Info desactualizada?
     print 'Chunks overgoal:       %10d' % (sum([matrixinfo[x][3] for x in range(1,5)]))
-    print 'Listos p/borrar:       %10d' % (matrixinfo[0][0])
+    print 'Ready to erase:       %10d' % (matrixinfo[0][0])
     print 'Pendientes de borrado: %10d' % (sum(matrixinfo[0][1:3]))
     for i in range(len(matrixinfo[0])):
         if matrixinfo[0][i]:
             print 'Pendientes con %d copias: %8d' % (i, matrixinfo[0][i])
     print
-    print 'Espacio total:    %6d GB' % (masterinfo['total_space']/1024/1024/1024)
-    print 'Disponible:       %6d GB' % (masterinfo['avail_space']/1024/1024/1024)
-    print 'Memoria usada:    %6d MB' % (masterinfo['memusage']/1024/1024)
+    print 'Total space:    %6d GB' % (masterinfo['total_space']/1024/1024/1024)
+    print 'Available:       %6d GB' % (masterinfo['avail_space']/1024/1024/1024)
+    print 'Used memory:    %6d MB' % (masterinfo['memusage']/1024/1024)
 
 #    print ': %8d' % (matrixinfo[''])
 #    print ': %8d' % (chunk_info[''])
