@@ -62,7 +62,7 @@ def disks():
         csd[host] = (perc, erro, stat)
     print '\nDisks status:'
     for key in sorted(csd.iterkeys()):
-        print '%-10s %-25s %2d%% usado - %-25s - %s' % (key.split(':')[0], key.split(':')[1], csd[key][0], csd[key][1], csd[key][2])
+        print '%-10s %-25s %2d%% used - %-25s - %s' % (key.split(':')[0], key.split(':')[1], csd[key][0], csd[key][1], csd[key][2])
 
 
 def exports():
